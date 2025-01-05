@@ -1,0 +1,232 @@
+1. Answering Theoretical Questions:
+1. What is the difference between iteration and recursion?
+Iteration:
+
+Performed using loops (like for and while).
+
+Less memory-intensive as it does not rely on the stack.
+
+Suitable when a certain number of repetitions is required.
+
+
+Recursion:
+
+Performed by calling the function on itself.
+
+Relies on the call stack to store intermediate states.
+
+Can lead to high memory usage if there is no termination condition.
+
+
+2. What is a stack, and how does it support recursion?
+
+
+
+A stack is a data structure that operates on a "Last In, First Out" (LIFO) basis. During recursion, intermediate values (parameters and local variables) are stored on the stack.
+
+3. What is a "call stack"?
+
+
+
+A call stack is a special stack used by the system to track function calls during program execution. It stores return addresses and variables for each function call.
+
+4. Why might recursion lead to a stack overflow, and how can this be avoided?
+
+
+
+A stack overflow occurs when the chain of recursive calls is too long.
+
+Solution:
+
+Use iteration instead of recursion.
+
+Convert the recursion to tail recursion if possible.
+
+
+5. What is "tail recursion," and what are its advantages?
+
+
+
+Tail recursion is a recursive function where the last operation is the recursive call itself.
+
+Advantage: The compiler can optimize it to reduce stack usage.
+
+6. How does using a stack help in transforming iterative solutions?
+
+
+
+A stack allows us to simulate the manual state of function calls by storing intermediate values, making the solution more memory-efficient.
+
+7. What are the consequences of replacing recursion with iteration using a stack?
+
+
+
+Pros:
+
+Reduces the risk of stack overflow.
+
+Improves performance.
+
+
+Cons:
+
+Increases code complexity.
+
+Requires manual stack management.
+
+
+8. How do you simulate function calls using a stack?
+
+
+
+To simulate function calls, you need:
+
+A stack to store intermediate values.
+
+A loop to manage the function calls and simulate recursion.
+
+
+9. What is the "base case" in recursion?
+
+
+
+The base case is the condition that ends the recursion process. If it is not defined or incorrect, it can result in infinite recursion.
+
+
+---
+
+2. Solutions to Practical Exercises:
+
+1. Factorial Calculation:
+
+
+
+def factorial(n):
+    stack = []
+    result = 1
+    while n > 0:
+        stack.append(n)
+        n -= 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+print(factorial(5))  # Example: 5! = 120
+
+2. Fibonacci Sequence:
+
+
+
+def fibonacci(n):
+    if n <= 1:
+        return n
+    stack = [(n, 0)]
+    result = 0
+    while stack:
+        current, temp = stack.pop()
+        if current <= 1:
+            result += current
+        else:
+            stack.append((current - 1, 0))
+            stack.append((current - 2, 0))
+    return result
+
+print(fibonacci(5))  # Example: n=5
+
+3. Depth-First Search (DFS):
+
+
+
+def dfs(graph, start):
+    stack = [start]
+    visited = set()
+    while stack:
+        node = stack.pop()
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph[node]:
+                stack.append(neighbor)
+    return visited
+
+# Example of a graph:
+graph = {
+    1: [2, 3],
+    2: [4],
+    3: [5],
+    4: [],
+    5: []
+}
+print(dfs(graph, 1))  # {1, 2, 3, 4, 5}
+
+4. Postorder Traversal:
+
+
+
+def postorder_traversal(root):
+    stack, output = [], []
+    stack.append(root)
+    while stack:
+        node = stack.pop()
+        if node:
+            output.append(node.val)
+            stack.append(node.left)
+            stack.append(node.right)
+    return output[::-1]
+
+5. Balanced Parentheses Check:
+
+
+
+def is_balanced(expression):
+    stack = []
+    for char in expression:
+        if char in "({[":
+            stack.append(char)
+
+intissar Lk🩷, [05/01/2025 11:27]
+elif char in ")}]":
+            if not stack:
+                return False
+            top = stack.pop()
+            if (char == ")" and top != "(") or \
+               (char == "}" and top != "{") or \
+               (char == "]" and top != "["):
+                return False
+    return not stack
+
+print(is_balanced("({[]})"))  # True
+
+6. Permutations:
+
+
+
+def permutations(string):
+    stack = [("", string)]
+    result = []
+    while stack:
+        prefix, remaining = stack.pop()
+        if not remaining:
+            result.append(prefix)
+        for i in range(len(remaining)):
+            stack.append((prefix + remaining[i], remaining[:i] + remaining[i+1:]))
+    return result
+
+print(permutations("abc"))
+
+7. Tower of Hanoi:
+
+
+
+def hanoi(n, source, target, auxiliary):
+    stack = [(n, source, target, auxiliary)]
+    while stack:
+        n, source, target, auxiliary = stack.pop()
+        if n == 1:
+            print(f"Move disk from {source} to {target}")
+        else:
+            stack.append((n-1, auxiliary, target, source))
+            stack.append((1, source, target, auxiliary))
+            stack.append((n-1, source, auxiliary, target))
+
+hanoi(3, 'A', 'C', 'B')
+
