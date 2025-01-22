@@ -183,7 +183,7 @@ def is_balanced(expression):
         if char in "({[":
             stack.append(char)
 
-intissar Lk🩷, [05/01/2025 11:27]
+
 elif char in ")}]":
             if not stack:
                 return False
